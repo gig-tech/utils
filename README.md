@@ -1,2 +1,2 @@
 # utils
-Handy utilities making the life in the cloud easier for all of us.
+Handy utilities making our lives in the cloud easier for all of us.
