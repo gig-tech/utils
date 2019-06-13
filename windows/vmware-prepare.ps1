@@ -1,5 +1,6 @@
 ﻿$Date = Get-Date
 $drivers_dir = "C:\Windows\drivers"
+
 Set-Location -Path $drivers_dir
 
 Write-Host "`n`nWelcome To Windows VirtIO Drivers installation Utility`n`n"   -ForegroundColor red -BackgroundColor white
@@ -34,7 +35,7 @@ if ( $AppGUID.count -eq 0 )
 else {
 
 MsiExec.exe /norestart /q/x $AppGUID REMOVE=ALL
-Start-Sleep -s 5
+Start-Sleep -s 15
 Write-Host  "`n`n VMware Tools Has Been Uninstalled`n`n"   -ForegroundColor red -BackgroundColor white
 Write-Host "`n`nVirtIo Drivers Successfully Installed  please Shtudown The VM and Export it as OVA`n`n"   -ForegroundColor red -BackgroundColor white
 }
@@ -88,6 +89,19 @@ function drv-install
 
 }
 
+
+function enable_disks
+
+{
+  $online_disk_script = "C:\Windows\drivers\enable_disks.ps1"
+  Add-Content '$online_disk_script' "`nUnregister-ScheduledTask -TaskName "Configuration" -Confirm:$false`nGet-Disk | Where-Object IsOffline | Set-Disk   -IsReadOnly $False`nGet-Disk | Where-Object IsOffline | Set-Disk  -IsOffline $False`n"
+  $schAction = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument '-NoProfile -WindowStyle Hidden -File $online_disk_script'
+  $schTrigger = New-ScheduledTaskTrigger -AtStartup
+  $schPrincipal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel Highest
+  Register-ScheduledTask -Action $schAction -Trigger $schTrigger -TaskName "Configuration" -Description "Scheduled Task to run configuration Script At Startup" -Principal $schPrincipal
+
+
+}
 
 function download_files
 
@@ -161,5 +175,7 @@ cleanup
 download_files
 
 drv-install
+
+enable_disks
 
 removevmtools
