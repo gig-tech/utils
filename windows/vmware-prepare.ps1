@@ -99,6 +99,8 @@ function enable_disks
   Get-Disk | Where-Object IsOffline | Set-Disk   -IsReadOnly $False
   Get-Disk | Where-Object IsOffline | Set-Disk  -IsOffline $False
 "@
+
+  Set-Content -Path $online_disk_script -Value $write_script
   $schAction = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument '-NoProfile -WindowStyle Hidden -File $online_disk_script'
   $schTrigger = New-ScheduledTaskTrigger -AtStartup
   $schPrincipal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel Highest
