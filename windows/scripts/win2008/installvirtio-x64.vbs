@@ -58,5 +58,5 @@ Set objShell = Nothing
 
 set objShell = CreateObject("Wscript.shell")
 objShell.CurrentDirectory = "c:\virtio\win2008x64"
-objShell.run("CMD /K certutil.exe -f -addstore TrustedPublisher virtiocert.cer & timeout 5 & .\devon.exe install stor\x86\viostor.inf ""PCI\VEN_1AF4&DEV_1001&SUBSYS_00021AF4&REV_00"" & timeout 5 &  pnputil.exe -i -a net\x86\netkvm.inf & timeout 5 & pnputil.exe -i -a balloon\x86\balloon.inf ")
+objShell.run("CMD /K certutil.exe -f -addstore TrustedPublisher virtiocert.cer & timeout 5 & .\devon.exe install stor\amd64\viostor.inf ""PCI\VEN_1AF4&DEV_1001&SUBSYS_00021AF4&REV_00"" & timeout 5 &  pnputil.exe -i -a net\amd64\netkvm.inf & timeout 5 & pnputil.exe -i -a balloon\amd64\balloon.inf ")
 Set objShell = Nothing
