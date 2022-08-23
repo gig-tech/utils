@@ -2,8 +2,6 @@
 Write-Host "`n`nRemoving VMware tools from your VM machine`n`n" -ForegroundColor red -BackgroundColor white
 
 function removevmtools {
-
-  try {
     
     $product = Get-WmiObject -Class Win32_Product | Where-Object { $_.Name -like "VMware Tools"}
     $AppGUID = $product.properties["IdentifyingNumber"].value.toString()
@@ -20,9 +18,6 @@ function removevmtools {
     Write-Host "`n`nPlease Shtudown The VM and Export it as OVA`n`n" -ForegroundColor red -BackgroundColor white
 
     }
-  } catch { 
-
-  }
 }
 
 removevmtools
